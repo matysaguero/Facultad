@@ -1,3 +1,5 @@
+{-# LANGUAGE NPlusKPatterns #-}
+
 -- Ejercicio 1a --
 esCero :: Int -> Bool
 esCero x = x == 0
@@ -10,8 +12,8 @@ esCero x = x == 0
 
 -- Ejercicio 1b --
 esPositivo :: Int -> Bool
-esPositivo x | x >= 0 = True
-             | x < 0 = False
+esPositivo x | x > 0 = True
+             | otherwise = False
 
 -- Ejemplos --
 -- *Main> esPositivo 3
@@ -121,6 +123,8 @@ paratodo' (x:xs) f = f x && (paratodo' xs f)
 existe' :: [a] -> (a -> Bool) -> Bool
 existe' [] f = False
 existe' (x:xs) f = f x || (existe' xs f)
+-- existe' xs (esMultiplo n)
+-- (x:xs) (esMultiplo n) = esMultiplo n x || existe' xs ... 
 
 -- Ejemplos --
 -- *Main> existe' [-1,-2,3,-4] esPositivo 
@@ -171,11 +175,11 @@ todosPares xs = paratodo' xs esPar
 -- *Main> todosPares [2,3,4,5]
 -- False
 -- *Main> todosPares [2,4,6]
--- False
+-- True
 
 -- Ejercicio 6b -- 
 esMultiplo :: Int -> Int -> Bool
-esMultiplo n1 n2 = mod n1 n2 == 0
+esMultiplo n1 n2 = mod n2 n1 == 0
 
 hayMultiplo :: Int -> [Int] -> Bool
 hayMultiplo x xs = existe' xs (esMultiplo x)
@@ -197,8 +201,11 @@ sumaCuadrados x = sumatoria' [0..(x-1)] (^2)
 -- 14
 
 -- Ejercicio 6d --
+esDiv :: Int -> Int -> Bool
+esDiv x1 x2 = mod x1 x2 == 0
+
 existeDivisor :: Int -> [Int] -> Bool
-existeDivisor n ls = existe' ls (esMultiplo n)
+existeDivisor x xs = existe' xs (esDiv x)
 
 -- Ejemplos --
 -- *Main> existeDivisor 6 [2,3,4]
@@ -227,8 +234,13 @@ factorial' x = productoria [1..x]
 -- 120
 
 -- Ejercicio 6g --
+soloPrimos :: [Int] -> [Int]
+soloPrimos [] = []
+soloPrimos (x:xs) | esPrimo x = x:soloPrimos xs
+                  | otherwise = soloPrimos xs
+
 multiplicaPrimos :: [Int] -> Int
-multiplicaPrimos xs = productoria (filter esPrimo xs)
+multiplicaPrimos xs = productoria (soloPrimos xs)
 
 -- Ejemplos --
 -- *Main> multiplicaPrimos [2,3,4,5,6]
@@ -242,8 +254,19 @@ fib 0 = 1
 fib 1 = 1
 fib x = fib (x-1) + fib (x-2)
 
+arrayFib :: Int -> [Int] -> [Int]
+arrayFib x [] = []
+arrayFib x (y:xs) | fib y > x = []
+                    | fib y == x = [y]
+                    | otherwise = arrayFib x xs
+
+-- Para un poco de contexto: 'x' va a ser el número que yo quiero comprobar si se encuentra dentro, o más bien, si existe, dentro de la sucesión de fibonacci.
+-- 'y', va a ser la posición dentro de la sucesión de fibonacci, que al hacer (fib 'y'), me devuelve el resultado de la sucesión de fib hasta esa posición.
+-- Al yo comparar 'x' con fib 'y', lo que estoy haciendo es comprobando si mi 'x' se encuentra dentro de la sucesión hasta 'y' posición, siendo que si mi 'x' es menor a fib 'y', la sucesión sigue, en caso de que en la siguiente posición, mi 'y' es mayor a mi 'x', esto significa que mi 'x' no se encuentra dentro de la sucesión, por lo tanto me devuelve una lista vacía.
+-- en caso de que mi 'x' y mi fib 'y', sean iguales, pego 'y' a una lista sin pasarla por la función de fib, lo cual, de manera conveniente me devuelve su posición dentro de la sucesión.
+
 esFib :: Int -> Bool
-esFib x = pertenece x (map fib [0..(x+1)])
+esFib x = existe' (arrayFib x [0..(x+1)]) (>= 0)
 
 -- Ejemplos -- 
 -- esFib 2
@@ -280,7 +303,7 @@ todosFib (xs) = paratodo' xs esFib
 -- Ejercicio 8a --
 duplicaElemento :: [Int] -> [Int] 
 duplicaElemento [] = []
-duplicaElemento (x:xs) = (x * 2):(duplicaElemento xs)
+duplicaElemento (x:xs) = (x*2):(duplicaElemento xs)
 
 -- Ejemplos -- 
 -- *Main> duplicaElemento [2,3,4]
@@ -299,11 +322,11 @@ duplicaElemento' xs = map (*2) xs
 -- [-2,-4,6]
 
 -- Ejercicio 9a -- 
-soloPrimos :: [Int] -> [Int]
-soloPrimos [] = []
-soloPrimos (x:xs)
-  | esPrimo x = x:(soloPrimos xs)
-  | otherwise = soloPrimos xs
+soloPrimos'' :: [Int] -> [Int]
+soloPrimos'' [] = []
+soloPrimos'' (x:xs)
+  | esPrimo x = x:(soloPrimos'' xs)
+  | otherwise = soloPrimos'' xs
 
 -- Ejemplos --
 -- *Main> soloPrimos [2,3,4,5]
@@ -377,6 +400,4 @@ primIguales' xs = primIgualesA' (xs!!0) xs
 -- primIguales' [2, 2, 3, 4]
 -- [2,2]
 -- primIguales' "aabcd"
--- "aa"
-
--- Ejercicio 12 --
+-- "aa" 

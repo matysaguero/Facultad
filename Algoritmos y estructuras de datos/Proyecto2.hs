@@ -15,7 +15,7 @@ titulo Astronomia = "Licenciatura en Astronomia"
 -- "Licenciatura en Ciencias de la Computacion"
 
 -- Ejercicio 1c -- 
-data NotaBasica = Do | Re | Mi | Fa | Sol | La | Si 
+data NotaBasica = Do | Re | Mi | Fa | Sol | La | Si deriving (Eq, Ord, Show)
 
 -- Ejercicio 1d -- 
 cifradoAmericano :: NotaBasica -> Char
@@ -72,7 +72,7 @@ type Altura = Int
 type NumCamiseta = Int
 
 -- Tipos algebraicos sin parametros (aka enumerados)
-data Zona = Arco | Defensa | Mediocentro | Delantera 
+data Zona = Arco | Defensa | Mediocentro | Delantera deriving Eq
 data TipoReves = DosManos | UnaMano
 data Modalidad = Carretera | Pista | Monte | Bmx
 data PiernaHabil = Izquierda | Derecha 
@@ -98,14 +98,14 @@ contar_futbolista (_:xs) z = contar_futbolista xs z
 
 -- Ejercicio 4e --
 igual_zona :: Zona -> Deportista -> Bool
-igual_zona z = (Futbolista zona _ _ _ ) = zona == z
-igual zona z _ = False
+igual_zona z (Futbolista zona _ _ _ ) = zona == z
+igual_zona z _ = False
 
 contar_futbolista2 :: [Deportista] -> Zona -> Int
 contar_futbolista2 [] z = 0
 contar_futbolista2 xs z = length (filter (igual_zona z) xs)
 
--- 5a --
+-- Ejercicio 5a --
 sonidoNatural :: NotaBasica -> Int
 sonidoNatural Do = 0
 sonidoNatural Re = 2
@@ -114,3 +114,34 @@ sonidoNatural Fa = 5
 sonidoNatural Sol = 7
 sonidoNatural La = 9
 sonidoNatural Si = 11
+
+-- Ejercicio 5b --
+data Alteracion = Bemol | Natural | Sostenido deriving (Eq, Ord, Show)
+
+-- Ejercicio 5c -- 
+data NotaMusical = Nota NotaBasica Alteracion deriving (Eq, Ord, Show)
+
+-- Ejercicio 5d --
+sonidoCromatico :: NotaMusical -> Int
+sonidoCromatico (Nota n a) =
+    case a of
+        Bemol -> valorNota - 1
+        Natural -> valorNota
+        Sostenido -> valorNota + 1
+    where valorNota = sonidoNatural n
+
+-- Ejercicio 5e --
+-- *Main> sonidoCromatico (Nota Do Sostenido) == sonidoCromatico (Nota Re Bemol)
+-- True
+
+-- *Main> sonidoCromatico (Nota Re Sostenido) == sonidoCromatico (Nota Re Bemol)
+-- False
+
+-- Ejercicio 5f --
+-- *Main> sonidoCromatico (Nota Re Sostenido) >= sonidoCromatico (Nota Re Bemol)
+-- True
+
+-- *Main> sonidoCromatico (Nota Re Sostenido) >= sonidoCromatico (Nota Sol Sostenido)
+-- False
+
+-- Ejercicio 6 --
