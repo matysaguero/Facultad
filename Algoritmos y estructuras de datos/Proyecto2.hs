@@ -72,21 +72,20 @@ type Altura = Int
 type NumCamiseta = Int
 
 -- Tipos algebraicos sin parametros (aka enumerados)
-data Zona = Arco | Defensa | Mediocentro | Delantera deriving Eq
-data TipoReves = DosManos | UnaMano
-data Modalidad = Carretera | Pista | Monte | Bmx
-data PiernaHabil = Izquierda | Derecha 
+data Zona = Arco | Defensa | Mediocentro | Delantera deriving (Eq, Show)
+data TipoReves = DosManos | UnaMano deriving (Eq, Show)
+data Modalidad = Carretera | Pista | Monte | Bmx deriving (Eq, Show)
+data PiernaHabil = Izquierda | Derecha deriving (Eq, Show)
 
 -- Sinonimo
 type ManoHabil = PiernaHabil
 
 -- Deportista es un tipo algebraico con tipos parametricos 
-data Deportista = Ajedrecista
-                | Ciclista Modalidad
+data Deportista = Ajedrecista 
+                | Ciclista Modalidad 
                 | Velocista Altura
                 | Tenista TipoReves ManoHabil Altura
-                | Futbolista Zona NumCamiseta PiernaHabil Altura
-
+                | Futbolista Zona NumCamiseta PiernaHabil Altura deriving (Eq, Show)
 -- Ejercicio 4d --
 contar_futbolista :: [Deportista] -> Zona -> Int
 contar_futbolista [] z = 0 
@@ -145,3 +144,24 @@ sonidoCromatico (Nota n a) =
 -- False
 
 -- Ejercicio 6 --
+data Talvez a = Nada | Solo a deriving (Eq, Ord, Show) -- Tuve que redefinir este tipo de dato en español porque estas definiciones ya vienen importadas en este entorno GHCi''
+
+-- Ejercicio 6a --
+primerElemento :: [a] -> Maybe a
+primerElemento [] = Nothing
+primerElemento (x:xs) = Just x
+
+-- Ejercicio 7 --
+data Cola = VaciaC | Encolada Deportista Cola deriving Show
+
+-- Ejercicio 7(a1) --
+atender :: Cola -> Maybe Cola
+atender VaciaC = Nothing 
+atender (Encolada dep cola) = Just cola
+
+-- Ejercicio 7 (a2) --
+encolar :: Deportista -> Cola -> Cola 
+encolar dep1 VaciaC = (Encolada dep1 VaciaC)
+encolar dep1 (Encolada dep2 cola) = (Encolada dep1 (Encolada dep2 cola)) 
+
+-- Ejercicio 7 (a3) --
