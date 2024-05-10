@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 int main(void){
-
+    
 int x, y, z;
 
 printf("Ingresar las siguientes variables\n");
