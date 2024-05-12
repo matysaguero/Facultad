@@ -50,8 +50,8 @@ return 0;
 // Primer resultado: 11
 // Segundo Resultado: 55
 // Tercer resultado: False
-// cuarto resultado: 0
-// quinto resultado: True
+// Cuarto resultado: 0
+// Quinto resultado: True
 
 // Ingresar las siguientes variables
 // 1
@@ -60,5 +60,5 @@ return 0;
 // Primer resultado: 12
 // Segundo Resultado: 499
 // Tercer resultado: False
-// cuarto resultado: 5
-// quinto resultado: False
+// Cuarto resultado: 5
+// Quinto resultado: False
