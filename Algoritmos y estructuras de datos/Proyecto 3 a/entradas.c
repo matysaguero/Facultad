@@ -3,7 +3,7 @@
    int pedirEntero (void) {
            int n;
 
-           printf ("Ingrese un valor entero:\n");
+           printf ("In  grese un valor entero:\n");
            scanf ("%d", &n);
            
         return n;

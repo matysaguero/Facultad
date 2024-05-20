@@ -30,7 +30,12 @@ return 0;
 //  [σ1 : (x → 10, y → 3, i → 1), (x → 7, y → 3, i → 2).......]
 // od
 
-// [σ₁⁰: (x → 10), (y → 3), (i → 1)
-// σ₁¹ : (x → 7), (y → 3), (i → 2)
-// σ₁²: (x → 4), (y → 3), (i → 3)
+// [σ₁⁰: (x → 10), (y → 3), (i → 1),
+// σ₁¹ : (x → 7), (y → 3), (i → 2),
+// σ₁²: (x → 4), (y → 3), (i → 3),
 // σ₁³: (x → 1), (y → 3), (i → 4)].
+
+// 3) Básicamente, este programa es un algoritmo de la división, donde:
+// "x" vendría a ser mi dividendo, o número al que quiero divivir y, por ende, mi resto si mi división no es entera.
+// "y" mi divisor, ya que es el número que vamos restando constantemente a mi dividendo ("x"), hasta que este sea menor que mi divisor.
+// "i" mi cociente, ya que cuenta la cantidad de iteraciones que pudimos realizar en esa división, o la cantidad de veces que pudimos dividir "x" en "y".
